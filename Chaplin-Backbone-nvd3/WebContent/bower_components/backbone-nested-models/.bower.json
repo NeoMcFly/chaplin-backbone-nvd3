@@ -1,0 +1,21 @@
+{
+  "name": "backbone-nested-models",
+  "version": "2.0.2",
+  "main": "./backbone-nested-models.js",
+  "dependencies": {
+    "backbone": "1.x",
+    "underscore": "1.x"
+  },
+  "ignore": [],
+  "homepage": "https://github.com/blittle/backbone-nested",
+  "_release": "2.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.0.2",
+    "commit": "2108573915d05c3acd75ef7a08791de36c44b056"
+  },
+  "_source": "git://github.com/blittle/backbone-nested.git",
+  "_target": "~2.0.2",
+  "_originalSource": "backbone-nested",
+  "_direct": true
+}

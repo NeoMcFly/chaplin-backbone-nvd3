@@ -1,0 +1,10 @@
+{
+  "name": "backbone-nested-models",
+  "version": "2.0.2",
+  "main": "./backbone-nested-models.js",
+  "dependencies": {
+    "backbone": "1.x",
+    "underscore": "1.x"
+  },
+  "ignore": []
+}

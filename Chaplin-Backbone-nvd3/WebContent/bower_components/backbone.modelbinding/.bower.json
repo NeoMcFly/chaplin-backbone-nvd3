@@ -1,0 +1,14 @@
+{
+  "name": "backbone.modelbinding.min",
+  "_cacheHeaders": {
+    "ETag": "\"c3cd09ac2f38eb05a2903f198354f889bab2fe8f\"",
+    "Content-Length": "7110",
+    "Content-Type": "text/plain; charset=utf-8"
+  },
+  "_release": "e-tag:c3cd09ac2",
+  "main": "index.js",
+  "_source": "https://raw.githubusercontent.com/derickbailey/backbone.modelbinding/master/backbone.modelbinding.min.js",
+  "_target": "*",
+  "_originalSource": "https://raw.githubusercontent.com/derickbailey/backbone.modelbinding/master/backbone.modelbinding.min.js",
+  "_direct": true
+}

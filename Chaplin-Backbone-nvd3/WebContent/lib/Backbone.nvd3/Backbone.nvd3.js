@@ -20,19 +20,29 @@
 			
 			this.selector = options.selector || '#chart'
 			
+			this.key = options.key || '';
+			this.xname = options.xname || '';
+			this.yname = options.yname || '';
+			
 			this.data = [{
-				key: "Data One",
-				values: [
-		                  {"date": 15854, "open": 165.42, "high": 165.8, "low": 164.34, "close": 165.22, "volume": 160363400, "adjusted": 164.35},
-		                  {"date": 15855, "open": 165.35, "high": 166.59, "low": 165.22, "close": 165.83, "volume": 107793800, "adjusted": 164.96},
-		                  {"date": 15856, "open": 165.37, "high": 166.31, "low": 163.13, "close": 163.45, "volume": 176850100, "adjusted": 162.59},
-		                  ]
+				key: this.key,
+				values: []
 			}]
 			
-	        this.chart = nv.models.lineWithFocusChart()
-	            .x(function(d) { return d['date'] })
-	            .y(function(d) { return d['close'] });
+	        this.chart = this.createChart(nv);
 			
+			this.listenTo(this.collection, 'change add remove reset', this.update);
+		},
+		
+		/**
+		 * Default Type Chart
+		 * 
+		 */
+		createChart : function(nv){
+			var self = this;
+			return nv.models.lineWithFocusChart();
+//				.x(function(d) { return d[self.xname] })
+//	            .y(function(d) { return d[self.yname] });
 		},
 		
 		render : function(){
@@ -53,19 +63,26 @@
 			return this;
 		},
 	
-//		nv.addGraph(function() {
+		/**
+		 * Called when the chart must be refreshed
+		 */
+		update : function(){
+			console.log('1');
+			this.data[0].values = this.map();
+			console.log('2');
+			this.chart.update();
+			console.log('3');
+		},
 		
-//	        var chart = nv.models.candlestickBar()
-//	            .x(function(d) { return d['date'] })
-//	            .y(function(d) { return d['close'] });
-		
-//	        d3.select("#chart1 svg")
-//	                .datum(data)
-//	                .transition().duration(500)
-//	                .call(chart);
-//	        nv.utils.windowResize(chart.update);
-//	        return chart;
-//	    });
+		map: function(){
+			var datas = this.collection.map(function(item,index){
+				return {
+					x : item.get(this.xname),
+					y : item.get(this.yname)
+					}
+			},this);
+			return datas;
+		},
 		
 		remove : function(){
 			if(nv.graphs.length) {

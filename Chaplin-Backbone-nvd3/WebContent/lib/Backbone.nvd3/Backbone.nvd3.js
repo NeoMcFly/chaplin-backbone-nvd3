@@ -6,9 +6,9 @@
 		
 		chart : null,
 		
-		data : null,
-		
 		selector : null,
+		
+		chartData : null,
 		
 		initialize : function(options){
 			Backbone.View.prototype.initialize.apply(this, arguments);
@@ -18,16 +18,11 @@
 				throw new Error('A collection must be provided');
 			}
 			
-			this.selector = options.selector || '#chart'
+			this.selector = options.selector || '#chart';
 			
 			this.key = options.key || '';
 			this.xname = options.xname || '';
 			this.yname = options.yname || '';
-			
-			this.data = [{
-				key: this.key,
-				values: []
-			}]
 			
 	        this.chart = this.createChart(nv);
 			
@@ -40,9 +35,9 @@
 		 */
 		createChart : function(nv){
 			var self = this;
-			return nv.models.lineWithFocusChart();
-//				.x(function(d) { return d[self.xname] })
-//	            .y(function(d) { return d[self.yname] });
+			return nv.models.lineWithFocusChart()
+				.x(function(d) { return d[self.xname] })
+	            .y(function(d) { return d[self.yname] });
 		},
 		
 		render : function(){
@@ -50,14 +45,18 @@
 			
 			nv.addGraph(function() {
 
-		        d3.select(self.selector)
-		        	.datum(self.data)
-		        	.transition().duration(500)
-		        	.call(self.chart);
+				var data = [{
+					key: self.key,
+					values: self.collection.toJSON()
+				}];
+				
+				self.chartData = d3.select(self.selector).datum(data);
 
-			    nv.utils.windowResize(self.chart.update);
+				self.chartData.transition().duration(500).call(self.chart);
 
-			    return self.chart;
+				nv.utils.windowResize(self.chart.update);
+
+				return self.chart;
 			});
 			
 			return this;
@@ -67,11 +66,14 @@
 		 * Called when the chart must be refreshed
 		 */
 		update : function(){
-			console.log('1');
-			this.data[0].values = this.map();
-			console.log('2');
-			this.chart.update();
-			console.log('3');
+			
+			var data = [{
+				key: this.key,
+				values: this.collection.toJSON()
+			}];
+			
+			// Update the SVG with the new data and call chart
+			this.chartData.datum(data).transition().duration(3000).call(this.chart);
 		},
 		
 		map: function(){
@@ -79,7 +81,7 @@
 				return {
 					x : item.get(this.xname),
 					y : item.get(this.yname)
-					}
+					};
 			},this);
 			return datas;
 		},

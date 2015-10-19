@@ -3,7 +3,8 @@ define(['views/base/view',
         'models/base/model',
         'models/base/collection',
         'text!views/chart/chart.hbs',
-        'text!views/chart/dot.hbs'
+        'text!views/chart/dot.hbs',
+        'backbone-nvd3'// Just for loading
         ], function(View, CollectionView, Model, Collection, template, dotTemplate) {
 	'use strict';
 
@@ -38,6 +39,13 @@ define(['views/base/view',
 		render : function(){
 			View.prototype.render.apply(this, arguments);
 			
+			var	chart = new Backbone.nvd3({
+				collection : this.collection,
+				selector : '.bb_chart svg'
+			});
+			
+			chart.render();
+			
 			var listView = new CollectionView({
 				itemView : DotView,
 				collection : this.collection,
@@ -54,7 +62,7 @@ define(['views/base/view',
 		},
 		
 		remove : function(){
-			
+			this.collection.remove(this.collection.at(0));
 		}
 		
 	});

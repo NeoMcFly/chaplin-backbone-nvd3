@@ -18,7 +18,12 @@ require.config({
 		'backbone-nested':		 		'../bower_components/backbone-nested-models/backbone-nested-models.min',
 
 		'chaplin': 						'../bower_components/chaplin/chaplin.min',
-		'handlebars': 					'../bower_components/handlebars/handlebars.amd.min'
+		'handlebars': 					'../bower_components/handlebars/handlebars.amd.min',
+		
+		'd3':							'../bower_components/d3/d3.min',
+		'nvd3':							'../bower_components/nv.d3/nv.d3',
+		
+		'backbone-nvd3':				'../lib/Backbone.nvd3/Backbone.nvd3',
 	},
 
 	map: {
@@ -41,9 +46,16 @@ require.config({
 		'backbone-nested': {
 			deps: ['backbone']
 		},
+		'backbone-nvd3': {
+			deps: ['backbone','nvd3']
+		},
 		'chaplin': {
 			deps: ['backbone'],
 			exports: 'Chaplin'
+		},
+		'nvd3': {
+			deps: ['d3'],
+			exports: 'nv'
 		}
 	}
 

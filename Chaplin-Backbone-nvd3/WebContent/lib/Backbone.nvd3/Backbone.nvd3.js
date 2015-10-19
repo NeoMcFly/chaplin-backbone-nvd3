@@ -4,6 +4,8 @@
 	
 	var Chart = Backbone.nvd3 = Backbone.View.extend({
 		
+		key : null,
+		
 		chart : null,
 		
 		selector : null,
@@ -35,9 +37,7 @@
 		 */
 		createChart : function(nv){
 			var self = this;
-			return nv.models.lineWithFocusChart()
-				.x(function(d) { return d[self.xname] })
-	            .y(function(d) { return d[self.yname] });
+			return nv.models.lineWithFocusChart();
 		},
 		
 		render : function(){
@@ -47,7 +47,7 @@
 
 				var data = [{
 					key: self.key,
-					values: self.collection.toJSON()
+					values: self.map()
 				}];
 				
 				self.chartData = d3.select(self.selector).datum(data);
@@ -69,11 +69,11 @@
 			
 			var data = [{
 				key: this.key,
-				values: this.collection.toJSON()
+				values: this.map()
 			}];
 			
 			// Update the SVG with the new data and call chart
-			this.chartData.datum(data).transition().duration(3000).call(this.chart);
+			this.chartData.datum(data).transition().duration(500).call(this.chart);
 		},
 		
 		map: function(){
@@ -81,7 +81,7 @@
 				return {
 					x : item.get(this.xname),
 					y : item.get(this.yname)
-					};
+				};
 			},this);
 			return datas;
 		},

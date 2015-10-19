@@ -21,7 +21,7 @@ require.config({
 		'handlebars': 					'../bower_components/handlebars/handlebars.amd.min',
 		
 		'd3':							'../bower_components/d3/d3.min',
-		'nvd3':							'../bower_components/nv.d3/nv.d3',
+		'nvd3':							'../bower_components/nv.d3/nv.d3.min',
 		
 		'backbone-nvd3':				'../lib/Backbone.nvd3/Backbone.nvd3',
 	},
@@ -56,6 +56,9 @@ require.config({
 		'nvd3': {
 			deps: ['d3'],
 			exports: 'nv'
+		},
+		'd3': {
+			exports: 'd3'
 		}
 	}
 

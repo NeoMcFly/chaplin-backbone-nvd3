@@ -20,11 +20,11 @@
 				throw new Error('A collection must be provided');
 			}
 			
-			this.selector = options.selector || '#chart';
+			this.selector = this.selector || options.selector || '#chart';
 			
-			this.key = options.key || '';
-			this.xname = options.xname || '';
-			this.yname = options.yname || '';
+			this.key   = this.key   || options.key   || '' ;
+			this.xname = this.xname || options.xname || '' ;
+			this.yname = this.yname || options.yname || '' ;
 			
 	        this.chart = this.createChart(nv);
 			
@@ -86,7 +86,7 @@
 		},
 		
 		remove : function(){
-			if(nv.graphs.length) {
+			if(nv.graphs && nv.graphs.length) {
 				var self = this;
 				nv.graphs = $.grep(nv.graphs, function(e){
 				     return e.uid != self.chart.uid;

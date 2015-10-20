@@ -51,10 +51,18 @@ define(['backbone-nvd3'// Just for loading
 			var chart = nv.models.lineWithFocusChart();
 
 			chart.margin({left: 120, right:50});
-			
+            
 			this.defineXAxis(chart);
 			
 			return chart;
+		},
+		
+		configureChart : function(chart){
+			ChartView.prototype.configureChart.apply(this, arguments);
+			
+			// Fix for lineWithFocusChart() who doesnt set lines duration by itself
+            chart.lines.duration(chart.duration());
+            chart.lines2.duration(chart.duration());
 		},
 		
 		defineXAxis: function(chart){

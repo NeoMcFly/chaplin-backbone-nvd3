@@ -12,6 +12,8 @@
 		
 		data : null,
 		
+		color : null,
+		
 		initialize : function(options){
 			Backbone.View.prototype.initialize.apply(this, arguments);
 			
@@ -22,14 +24,18 @@
 			
 			this.selector = this.selector || options.selector || '#chart';
 			
+			this.color = this.color || options.color || '#1F77B4' ;
 			this.key   = this.key   || options.key   || '' ;
 			this.xname = this.xname || options.xname || '' ;
 			this.yname = this.yname || options.yname || '' ;
 			
 	        this.chart = this.createChart(nv);
 			
+	        this.configureChart(this.chart);
+	        
 			this.listenTo(this.collection, 'change add remove reset', this.update);
 		},
+		
 		
 		/**
 		 * Default Type Chart
@@ -41,6 +47,8 @@
 			return chart;
 		},
 		
+		configureChart: function(chart){},
+		
 		render : function(){
 			var self = this;
 			
@@ -48,6 +56,7 @@
 
 				self.data = [{
 					key: self.key,
+					color : self.color,
 					values: self.map()
 				}];
 				

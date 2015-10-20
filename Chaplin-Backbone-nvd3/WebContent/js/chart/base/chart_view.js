@@ -19,52 +19,82 @@ define(['backbone-nvd3'// Just for loading
 	
 	var ChartView = Backbone.nvd3.extend({
 		
-		createChart : function(nv){
-			var chart = nv.models.lineChart(); 
-
-			chart.duration(2000);
+		color : '#C97289',
+		
+		configureChart : function(chart){
+			Backbone.nvd3.prototype.configureChart.apply(this, arguments);
 			
 			chart.noData = function(){return 'Aucune donnée';};
 			
-			chart.yAxis.axisLabel('Kg');
+			chart.duration(2000);
+			
+			console.log(chart);
+			
+			chart.yAxis.tickFormat(d3.locale.fr_FR.numberFormat(',.2f'));
 			chart.yAxis.axisLabelDistance(-10);
+			
+			if(chart.y2Axis){
+				chart.y2Axis.tickFormat(d3.locale.fr_FR.numberFormat(',.2f'));
+				chart.y2Axis.axisLabelDistance(-10);
+			}
+			
+			chart.useInteractiveGuideline = true;
+			
+			chart.tooltip.contentGenerator(function(data) {
+			    return '<h3>'+data.series[data.seriesIndex].key+'</h3><p>' + data.point.x + ' : <b>' + data.point.y + '</b></p>';
+			});
+		}
+		
+	});
+
+	ChartView.journalier = ChartView.extend({
+		
+		createChart : function(nv){
+			var chart = nv.models.lineWithFocusChart();
+
+			chart.margin({left: 120, right:50});
 			
 			this.defineXAxis(chart);
 			
 			return chart;
 		},
 		
-		update : function(){
-			this.key = Math.random();
+		defineXAxis: function(chart){
 			
-			this.defineXAxis(this.chart);
+			chart.xAxis.tickFormat( function(d) { 
+				return d3.locale.fr_FR.timeFormat('%d/%m/%Y')(new Date(d));
+			});
+			chart.x2Axis.tickFormat( function(d) { 
+				return d3.locale.fr_FR.timeFormat('%d/%m')(new Date(d));
+			});
 			
-			Backbone.nvd3.prototype.update.apply(this, arguments);
+		}
+	
+	});
+	
+	ChartView.mensuel = ChartView.extend({
+		
+		createChart : function(nv){
+			var chart = nv.models.lineChart(); 
+
+			chart.margin({left: 120, right:60});
+			
+			this.defineXAxis(chart);
+			
+			return chart;
 		},
 		
 		defineXAxis: function(chart){
-			
-			if(this.collection.length){
-				
-				// Does nothing...
-				var dataYear = new Date(this.collection.at(0).get(this.xname)).getFullYear();
-				
-				var timeScale = d3.time.scale().domain([new Date(dataYear, 0, 1), new Date(dataYear, 11, 31)]);
-	
-				//chart.lines.xScale( timeScale );
-				
-				//chart.xAxis.scale( timeScale );
-				
-				chart.xAxis.ticks( d3.time.months, 1);
-			
-				chart.xAxis.tickFormat( function(d) {
-					return d3.locale.fr_FR.timeFormat('%b')(new Date(d));
-				});
 
-			}
+			chart.xAxis.ticks( d3.time.months, 1);
+
+			chart.xAxis.tickFormat( function(d) {
+				return d3.locale.fr_FR.timeFormat('%b')(new Date(d));
+			});
+
 		}
 		
 	});
-
+	
 	return ChartView;
 });

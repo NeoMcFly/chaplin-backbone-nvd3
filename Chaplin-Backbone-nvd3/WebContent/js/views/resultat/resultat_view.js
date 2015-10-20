@@ -41,7 +41,7 @@ define(['views/base/view',
 		render : function(){
 			View.prototype.render.apply(this, arguments);
 			
-			var	chart = new ChartView({
+			var	chart = new ChartView.journalier({
 				collection : this.collection,
 				selector : '.bb_chart svg',
 				key : 'Résultats',

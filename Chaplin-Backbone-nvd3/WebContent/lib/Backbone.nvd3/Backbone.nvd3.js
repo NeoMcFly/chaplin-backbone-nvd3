@@ -10,7 +10,7 @@
 		
 		selector : null,
 		
-		chartData : null,
+		data : null,
 		
 		initialize : function(options){
 			Backbone.View.prototype.initialize.apply(this, arguments);
@@ -36,8 +36,9 @@
 		 * 
 		 */
 		createChart : function(nv){
-			var self = this;
-			return nv.models.lineWithFocusChart();
+			var chart = nv.models.lineWithFocusChart();
+			chart.duration(2000);
+			return chart;
 		},
 		
 		render : function(){
@@ -45,14 +46,15 @@
 			
 			nv.addGraph(function() {
 
-				var data = [{
+				self.data = [{
 					key: self.key,
 					values: self.map()
 				}];
 				
-				self.chartData = d3.select(self.selector).datum(data);
-
-				self.chartData.transition().duration(500).call(self.chart);
+				d3.select(self.selector)
+					.datum(self.data)
+					.transition().duration(500)
+					.call(self.chart);
 
 				nv.utils.windowResize(self.chart.update);
 
@@ -67,13 +69,10 @@
 		 */
 		update : function(){
 			
-			var data = [{
-				key: this.key,
-				values: this.map()
-			}];
+			this.data[0].key = this.key;
+			this.data[0].values = this.map(); 
 			
-			// Update the SVG with the new data and call chart
-			this.chartData.datum(data).transition().duration(500).call(this.chart);
+			this.chart.update();
 		},
 		
 		map: function(){

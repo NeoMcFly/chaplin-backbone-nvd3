@@ -21,8 +21,12 @@ define(['backbone-nvd3'// Just for loading
 		
 		createChart : function(nv){
 			var chart = nv.models.lineChart(); 
+
+			chart.duration(2000);
 			
-			chart.yAxis.axisLabel("Kg");
+			chart.noData = function(){return 'Aucune donnée';};
+			
+			chart.yAxis.axisLabel('Kg');
 			chart.yAxis.axisLabelDistance(-10);
 			
 			this.defineXAxis(chart);

@@ -46,14 +46,14 @@ define(['backbone-nvd3'// Just for loading
 			
 			if(this.collection.length){
 				
-				var dataYear = new Date(this.collection.at(0).get(this.xname)).getYear();
+				// Does nothing...
+				var dataYear = new Date(this.collection.at(0).get(this.xname)).getFullYear();
 				
 				var timeScale = d3.time.scale().domain([new Date(dataYear, 0, 1), new Date(dataYear, 11, 31)]);
 	
-				chart.xScale( timeScale );
+				//chart.lines.xScale( timeScale );
 				
-				chart.lines.xScale( timeScale );
-				//chart.lines2.xScale( timeScale );
+				//chart.xAxis.scale( timeScale );
 				
 				chart.xAxis.ticks( d3.time.months, 1);
 			

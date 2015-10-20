@@ -28,8 +28,6 @@ define(['backbone-nvd3'// Just for loading
 			
 			chart.duration(2000);
 			
-			console.log(chart);
-			
 			chart.yAxis.tickFormat(d3.locale.fr_FR.numberFormat(',.2f'));
 			chart.yAxis.axisLabelDistance(-10);
 			
@@ -84,14 +82,29 @@ define(['backbone-nvd3'// Just for loading
 			return chart;
 		},
 		
+		update: function(){
+			
+			this.defineXAxis(this.chart);
+			
+			ChartView.prototype.update.apply(this, arguments);
+		},
+		
 		defineXAxis: function(chart){
 
-			chart.xAxis.ticks( d3.time.months, 1);
-
-			chart.xAxis.tickFormat( function(d) {
-				return d3.locale.fr_FR.timeFormat('%b')(new Date(d));
-			});
-
+			if(this.collection.length){
+				
+				var dataYear = new Date(this.collection.at(0).get(this.xname)).getFullYear();
+				
+				chart.xDomain([new Date(dataYear, 0, 1), new Date(dataYear, 11, 1)]);
+				
+				chart.xScale(d3.time.scale());
+				
+				chart.xAxis.ticks( d3.time.months, 1);
+	
+				chart.xAxis.tickFormat( function(d) {
+					return d3.locale.fr_FR.timeFormat('%b')(new Date(d));
+				});
+			}
 		}
 		
 	});
